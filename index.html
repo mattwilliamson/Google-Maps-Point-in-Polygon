@@ -1,0 +1,130 @@
+<html>
+<!-- Ray Cast Point in Polygon extension for Google Maps GPolygon -->
+<!-- App Delegate Inc <htttp://appdelegateinc.com> 2010 -->
+
+<head>
+	<title>Google Maps Point in Polygon Test</title>
+	<!-- Import Google Maps API (Change the key to your own) -->
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAOzwQ7Lh4CqiMto5Mx5BruhRP7uQ16ovEZegyAfeetOdXUUHv1xQhaNqllcioqRUJo6b7JhhTgJZNyw" type="text/javascript"></script>
+	<script src="maps.google.polygon.containsLatLng.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	// Globals
+	var isEditing = false;
+	var polygon = null;
+	var map = null;
+	var isCompatible = GBrowserIsCompatible();
+	var markers = [];
+	var iconIncluded = 'http://maps.google.com/mapfiles/dd-start.png';
+	var iconExcluded = 'http://maps.google.com/mapfiles/dd-end.png';
+	
+	// Called when the edit button is clicked
+	function editClick() {
+		isEditing = !isEditing;
+			
+		if(isEditing && polygon != null) {
+			document.getElementById('edit_button').innerHTML = 'Stop Editing';
+			document.getElementById('help').innerHTML = 'Click to add points to your selection.';
+			document.getElementById('reset_button').disabled = 'disabled';
+			polygon.enableDrawing();
+		} else {
+			document.getElementById('edit_button').innerHTML = 'Edit Selection';
+			document.getElementById('reset_button').disabled = '';
+			document.getElementById('help').innerHTML = 'Click "Edit Selection" to select users.';
+			polygon.disableEditing();
+		}
+	}
+	
+	// Update all marker images (green if in polygon, red if not)
+	function updatePoints() {
+		for(var i in markers) {
+			var marker = markers[i];
+			var point = marker.getLatLng();
+			var inPoly = polygon.containsLatLng(point);
+			
+			if(inPoly) {
+				marker.setImage(iconIncluded);
+			} else {
+				marker.setImage(iconExcluded);
+			}
+		}
+	}
+	
+	// Delete the current polygon selection
+	function resetPolygon() {
+		if(polygon != null) {
+			map.removeOverlay(polygon);
+		}
+		
+		// Create a new polygon selector
+		polygon = new GPolygon([], "#000000", 1, 1, "#336699", 0.3);
+		map.addOverlay(polygon);
+		
+		// Add callback for when the polygon is updated
+		GEvent.addListener(polygon, "lineupdated", function() {
+			// Timeout is a hack, some browsers won't callback without a delay
+			setTimeout(updatePoints, 50);
+		});
+		
+		// Add callback for when the polygon is finished
+		GEvent.addListener(polygon, "endline", function() {
+			// Timeout is a hack, some browsers won't callback without a delay
+			setTimeout(editClick, 50);
+		});
+		
+		updatePoints();
+	}
+	
+	// Initialization
+	function load() {
+		if (isCompatible) {
+			// Create Map
+			map = new GMap2(document.getElementById("map"));
+			map.setCenter(new GLatLng(40, -90), 3);
+
+			// Add controls
+			map.addControl(new GLargeMapControl());
+			map.addControl(new GMapTypeControl());
+
+			// Create Selection Polygon
+			var latlng = map.getCenter();
+			var width = 20;
+			var height = 12;
+			var lat = latlng.lat();
+			var lng = latlng.lng();
+			var x1 = lng - width / 2;
+			var y1 = lat - height / 2;
+			var x2 = lng + width / 2;
+			var y2 = lat + height / 2;
+			
+			resetPolygon();
+
+			// Add 10 markers to the map at random locations
+			var bounds = map.getBounds();
+			var southWest = bounds.getSouthWest();
+			var northEast = bounds.getNorthEast();
+			var lngSpan = northEast.lng() - southWest.lng();
+			var latSpan = northEast.lat() - southWest.lat();
+
+			for (var i = 0; i < 100; i++) {
+				var point = new GLatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random());
+				var marker = new GMarker(point, {bouncy: true, title: "Customer " + i, autoPan: false});
+				map.addOverlay(marker);
+				marker.bindInfoWindowHtml("This is customer info " + i);
+				markers.push(marker);
+			}
+			
+			updatePoints();
+		}
+	}
+	</script>
+</head>
+<body onload="load()" onunload="GUnload()">
+	<div>
+		<span><button id="edit_button" onclick="editClick()" type="button">Edit Selection</button></span>
+		<span><button id="reset_button" onclick="resetPolygon()" type="button">Reset Selection</button></span>
+		<span id="help" style="color: #666;">Click &quot;Begin Editing&quot; to select users.</span>
+	</div>
+	<hr />
+	<div id="map" style="width: 640; height: 480; border:1px solid #333;"></div>
+</body>
+</html>
