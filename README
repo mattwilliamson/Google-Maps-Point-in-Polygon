@@ -1,4 +1,4 @@
-This is a Javascript Google Maps extension for the Polygon class to detect whether or not a point resides within it.
+This is a Javascript Google Maps v3 extension for the Polygon class to detect whether or not a point resides within it.
 
 Simplest Usage:
 
