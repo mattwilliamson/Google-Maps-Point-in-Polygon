@@ -1,5 +1,7 @@
 This is a Javascript Google Maps extension for the GPolygon class to detect whether or not a point resides within it. Included is a sample HTML page that makes use of it to demonstrate usage.
 
+<http://appdelegateinc.com/blog/2010/05/16/point-in-polygon-checking/>
+
 Simplest Usage:
 
 var coordinate = new GLatLng(40, -90);
