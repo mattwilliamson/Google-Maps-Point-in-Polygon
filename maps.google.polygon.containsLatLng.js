@@ -27,12 +27,12 @@ google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   }
 
   // Raycast point in polygon method
-  var numPaths = this.getPaths().getLength();
+  var inPoly = false;
 
+  var numPaths = this.getPaths().getLength();
   for(var p = 0; p < numPaths; p++) {
     var path = this.getPaths().getAt(p);
     var numPoints = path.getLength();
-    var inPoly = false;
     var j = numPoints-1;
 
     for(var i=0; i < numPoints; i++) { 
