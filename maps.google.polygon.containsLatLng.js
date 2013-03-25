@@ -5,7 +5,7 @@ if (!google.maps.Polygon.prototype.getBounds) {
     var bounds = new google.maps.LatLngBounds();
     var paths = this.getPaths();
     var path;
-    
+
     for (var p = 0; p < paths.getLength(); p++) {
       path = paths.getAt(p);
       for (var i = 0; i < path.getLength(); i++) {
@@ -14,25 +14,25 @@ if (!google.maps.Polygon.prototype.getBounds) {
     }
 
     return bounds;
-  }
+  };
 }
 
 // Polygon containsLatLng - method to determine if a latLng is within a polygon
 google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   // Exclude points outside of bounds as there is no way they are in the poly
- 
+
   var lat, lng;
 
   //arguments are a pair of lat, lng variables
-  if(arguments.length == 2) {
-    if(typeof arguments[0]=="number" && typeof arguments[1]=="number") {
+  if (arguments.length == 2) {
+    if (typeof arguments[0] == "number" && typeof arguments[1] == "number") {
       lat = arguments[0];
       lng = arguments[1];
     }
   } else if (arguments.length == 1) {
     var bounds = this.getBounds();
 
-    if(bounds != null && !bounds.contains(latLng)) {
+    if (!bounds && !bounds.contains(latLng)) {
       return false;
     }
     lat = latLng.lat();
@@ -45,12 +45,12 @@ google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   var inPoly = false;
 
   var numPaths = this.getPaths().getLength();
-  for(var p = 0; p < numPaths; p++) {
+  for (var p = 0; p < numPaths; p++) {
     var path = this.getPaths().getAt(p);
     var numPoints = path.getLength();
     var j = numPoints-1;
 
-    for(var i=0; i < numPoints; i++) { 
+    for (var i=0; i < numPoints; i++) {
       var vertex1 = path.getAt(i);
       var vertex2 = path.getAt(j);
 
@@ -65,4 +65,4 @@ google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   }
 
   return inPoly;
-}
+};
