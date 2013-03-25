@@ -30,7 +30,10 @@ google.maps.Polygon.prototype.containsLatLng = function(latLng) {
 
   // Arguments are a pair of lat, lng variables
   if (arguments.length == 2) {
-    if (typeof arguments[0] == "number" && typeof arguments[1] == "number") {
+    if (
+      typeof arguments[0] == "number" &&
+      typeof arguments[1] == "number"
+    ) {
       lat = arguments[0];
       lng = arguments[1];
     }
@@ -52,14 +55,25 @@ google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   for (p = 0; p < numPaths; p++) {
     path = this.getPaths().getAt(p);
     numPoints = path.getLength();
-    j = numPoints-1;
+    j = numPoints - 1;
 
     for (i = 0; i < numPoints; i++) {
       vertex1 = path.getAt(i);
       vertex2 = path.getAt(j);
 
-      if (vertex1.lng() < lng && vertex2.lng() >= lng || vertex2.lng() < lng && vertex1.lng() >= lng) {
-        if (vertex1.lat() + (lng - vertex1.lng()) / (vertex2.lng() - vertex1.lng()) * (vertex2.lat() - vertex1.lat()) < lat) {
+      if (
+        vertex1.lng() <  lng &&
+        vertex2.lng() >= lng ||
+        vertex2.lng() <  lng &&
+        vertex1.lng() >= lng
+      ) {
+        if (
+          vertex1.lat() +
+          (lng - vertex1.lng()) /
+          (vertex2.lng() - vertex1.lng()) *
+          (vertex2.lat() - vertex1.lat()) <
+          lat
+        ) {
           inPoly = !inPoly;
         }
       }
