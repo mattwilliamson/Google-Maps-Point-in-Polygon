@@ -2,13 +2,14 @@
 // http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js
 if (!google.maps.Polygon.prototype.getBounds) {
   google.maps.Polygon.prototype.getBounds = function(latLng) {
-    var bounds = new google.maps.LatLngBounds();
-    var paths = this.getPaths();
-    var path;
+    var bounds = new google.maps.LatLngBounds(),
+      paths = this.getPaths(),
+      path,
+      p, i;
 
-    for (var p = 0; p < paths.getLength(); p++) {
+    for (p = 0; p < paths.getLength(); p++) {
       path = paths.getAt(p);
-      for (var i = 0; i < path.getLength(); i++) {
+      for (i = 0; i < path.getLength(); i++) {
         bounds.extend(path.getAt(i));
       }
     }
@@ -21,16 +22,19 @@ if (!google.maps.Polygon.prototype.getBounds) {
 google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   // Exclude points outside of bounds as there is no way they are in the poly
 
-  var lat, lng;
+  var inPoly = false,
+    bounds, lat, lng,
+    numPaths, p, path, numPoints,
+    i, j, vertex1, vertex2;
 
-  //arguments are a pair of lat, lng variables
+  // Arguments are a pair of lat, lng variables
   if (arguments.length == 2) {
     if (typeof arguments[0] == "number" && typeof arguments[1] == "number") {
       lat = arguments[0];
       lng = arguments[1];
     }
   } else if (arguments.length == 1) {
-    var bounds = this.getBounds();
+    bounds = this.getBounds();
 
     if (!bounds && !bounds.contains(latLng)) {
       return false;
@@ -42,17 +46,16 @@ google.maps.Polygon.prototype.containsLatLng = function(latLng) {
   }
 
   // Raycast point in polygon method
-  var inPoly = false;
 
-  var numPaths = this.getPaths().getLength();
-  for (var p = 0; p < numPaths; p++) {
-    var path = this.getPaths().getAt(p);
-    var numPoints = path.getLength();
-    var j = numPoints-1;
+  numPaths = this.getPaths().getLength();
+  for (p = 0; p < numPaths; p++) {
+    path = this.getPaths().getAt(p);
+    numPoints = path.getLength();
+    j = numPoints-1;
 
-    for (var i=0; i < numPoints; i++) {
-      var vertex1 = path.getAt(i);
-      var vertex2 = path.getAt(j);
+    for (i = 0; i < numPoints; i++) {
+      vertex1 = path.getAt(i);
+      vertex2 = path.getAt(j);
 
       if (vertex1.lng() < lng && vertex2.lng() >= lng || vertex2.lng() < lng && vertex1.lng() >= lng) {
         if (vertex1.lat() + (lng - vertex1.lng()) / (vertex2.lng() - vertex1.lng()) * (vertex2.lat() - vertex1.lat()) < lat) {
