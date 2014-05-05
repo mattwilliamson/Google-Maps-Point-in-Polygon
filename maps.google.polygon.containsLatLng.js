@@ -1,4 +1,4 @@
-// Poygon getBounds extension - google-maps-extensions
+// Polygon getBounds extension - google-maps-extensions
 // https://github.com/tparkin/Google-Maps-Point-in-Polygon
 // http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js
 if (!google.maps.Polygon.prototype.getBounds) {
