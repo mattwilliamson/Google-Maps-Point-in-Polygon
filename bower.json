@@ -5,6 +5,8 @@
   "description": "Adds a containsLatLng() method to Polygon class for Google Maps API v3",
   "main": "maps.google.polygon.containsLatLng.js",
   "authors": [
+    "Matt Williamson <matt@aimatt.com>",
+    "Martin Kleppe http://twitter.com/aemkei",
     "Tim Parkin <tim@parkinwebdev.com>"
   ],
   "license": "MIT",
