@@ -19,7 +19,7 @@
     "polymer"
   ],
   "dependencies": {
-    "google-apis": "GoogleWebComponents/google-apis#~0.3.1",
-    "google-map": "GoogleWebComponents/google-map#~0.3.1"
+    "google-apis": "GoogleWebComponents/google-apis#master",
+    "google-map": "GoogleWebComponents/google-map#master"
   }
 }
