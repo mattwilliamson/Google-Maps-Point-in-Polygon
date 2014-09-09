@@ -1,0 +1,25 @@
+{
+  "name": "google-maps-point-in-polygon",
+  "version": "0.0.1",
+  "homepage": "https://github.com/tparkin/Google-Maps-Point-in-Polygon",
+  "description": "Adds a containsLatLng() method to Polygon class for Google Maps API v3",
+  "main": "maps.google.polygon.containsLatLng.js",
+  "authors": [
+    "Matt Williamson <matt@aimatt.com>",
+    "Martin Kleppe http://twitter.com/aemkei",
+    "Tim Parkin <tim@parkinwebdev.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+  ],
+  "keywords": [
+    "google",
+    "apis",
+    "polygon",
+    "polymer"
+  ],
+  "dependencies": {
+    "google-apis": "GoogleWebComponents/google-apis#master",
+    "google-map": "GoogleWebComponents/google-map#master"
+  }
+}
